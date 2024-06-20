@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    props: ['QuoteBlock']
+    props: ['quote']
 
 }
 </script>
