@@ -5,23 +5,26 @@
     <div class="button-container">
       <button @click="generateQuote">Generate Quote</button>
     </div>
+    <QuoteList :quotes="quotes"/>
   </div>
 </template>
 
 <script>
 import HeaderWeb from './components/HeaderWeb.vue';
 import QuoteBlock from './components/QuoteBlock.vue';
+import QuoteList from './components/QuoteList.vue';
 
 export default {
   name: 'App',
   components: {
     HeaderWeb,
-    QuoteBlock
+    QuoteBlock,
+    QuoteList
   },
   data() {
     return {
       quote: {
-        content: 'Click the button to generate a quote',
+        content: '',
         character: '',
         anime: ''
       },
@@ -30,6 +33,10 @@ export default {
   },
   methods: {
     async generateQuote() {
+      if(this.quote.content){
+        const newQuote = { ...this.quote };
+        this.quotes = [...this.quotes, newQuote];
+      }
       try {
         const response = await fetch('https://type.fit/api/quotes');
         const quoteList = await response.json();
@@ -44,6 +51,9 @@ export default {
         console.error('Error fetching quote:', error);
       }
     }
+  },
+  created (){
+    this.generateQuote();
   }
 }
 </script>
